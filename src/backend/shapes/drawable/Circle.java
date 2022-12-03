@@ -23,6 +23,15 @@ public class Circle extends AbstractShapeClass {
         this.radius = radius;
     }
 
+    @Override
+    public boolean contains(Point point) {
+        return false;
+    }
+
+    @Override
+    public void moveTo(Point point) {
+
+    }
 
     @Override
     public void draw(Graphics canvas) {
