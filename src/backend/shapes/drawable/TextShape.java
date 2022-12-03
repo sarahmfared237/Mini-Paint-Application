@@ -38,4 +38,14 @@ public class TextShape extends AbstractShapeClass {
         canvas.setColor(getColor());
         canvas.drawString(getText(), getPosition().x + getTextSize(), getPosition().y + getTextSize());
     }
+
+    @Override
+    public boolean contains(Point point) {
+        return false;
+    }
+
+    @Override
+    public void moveTo(Point point) {
+
+    }
 }

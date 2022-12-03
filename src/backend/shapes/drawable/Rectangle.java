@@ -46,4 +46,14 @@ public class Rectangle extends AbstractShapeClass {
             canvas.fillRect(getPosition().x, getPosition().y, getWidth(), getHeight());
         }
     }
+
+    @Override
+    public boolean contains(Point point) {
+        return false;
+    }
+
+    @Override
+    public void moveTo(Point point) {
+
+    }
 }

@@ -39,4 +39,14 @@ public class Circle extends AbstractShapeClass {
                     getRadius()*2, getRadius()*2);
         }
     }
+
+    @Override
+    public boolean contains(Point point) {
+        return false;
+    }
+
+    @Override
+    public void moveTo(Point point) {
+
+    }
 }

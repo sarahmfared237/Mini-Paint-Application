@@ -44,6 +44,7 @@ public class MainFrame extends JFrame {
         colorizeBtn.addActionListener(e -> changeColor());
         renameBtn.addActionListener(e -> renameShape());
 
+
     }
 
     public static void main(String[] args) {
@@ -139,10 +140,9 @@ public class MainFrame extends JFrame {
 
         e.renameShape(e.getShapes()[shapesComb.getSelectedIndex() - 1], name);
         e.refresh(null);
-        e.refreshComboBox(shapesComb);
     }
 
     public void createUIComponents() {
-        this.drawingPanel = new Engine();
+        this.drawingPanel = new Engine(shapesComb);
     }
 }

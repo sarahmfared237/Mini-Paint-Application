@@ -56,4 +56,14 @@ public class Triangle extends AbstractShapeClass {
             ((Graphics2D) canvas).fill(tri);
         }
     }
+
+    @Override
+    public boolean contains(Point point) {
+        return false;
+    }
+
+    @Override
+    public void moveTo(Point point) {
+
+    }
 }
