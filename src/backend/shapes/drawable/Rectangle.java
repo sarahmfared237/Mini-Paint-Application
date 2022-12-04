@@ -35,12 +35,13 @@ public class Rectangle extends AbstractShapeClass {
 
     @Override
     public boolean contains(Point point) {
-        return false;
+        return ((point.x >= getPosition().x && (point.x - getPosition().x) <= getWidth()) &&
+                (point.y >= getPosition().y && (point.y - getPosition().y) <= getHeight()));
     }
 
     @Override
     public void moveTo(Point point) {
-
+        setPosition(point);
     }
 
     @Override
@@ -55,15 +56,5 @@ public class Rectangle extends AbstractShapeClass {
             canvas.setColor(getFillColor());
             canvas.fillRect(getPosition().x, getPosition().y, getWidth(), getHeight());
         }
-    }
-
-    @Override
-    public boolean contains(Point point) {
-        return false;
-    }
-
-    @Override
-    public void moveTo(Point point) {
-
     }
 }

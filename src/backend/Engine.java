@@ -24,7 +24,6 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener {
         this.addMouseListener(this);
         shapes = new ArrayList<>();
         this.comboBox=comboBox;
-
     }
 
     @Override
@@ -45,6 +44,7 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener {
     @Override
     public void refresh(Graphics canvas) {
         repaint();
+        refreshComboBox();
     }
 
     @Override
@@ -80,7 +80,7 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener {
 
     }
 
-    public void refreshComboBox(JComboBox comboBox) {
+    public void refreshComboBox() {
         if (comboBox == null) return;
 
         comboBox.removeAllItems();
@@ -110,11 +110,13 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener {
         Point p = new Point(e.getX(), e.getY());
         for(int i=shapes.size()-1 ;i>=0;i--) {
             if (((AbstractShapeClass)shapes.get(i)).contains(p)) {
-                selectedIndex=i;
+                selectedIndex = i + 1;
+                break;
             }
         }
+
         if (selectedIndex != -1) {
-            comboBox.setSelectedItem(selectedIndex);
+            comboBox.setSelectedIndex(selectedIndex);
         }
     }
 

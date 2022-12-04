@@ -36,14 +36,4 @@ public class LineSegment extends AbstractShapeClass {
         canvas.setColor(getColor());
         canvas.drawLine(getPosition().x, getPosition().y, getPoint2().x, getPoint2().y);
     }
-
-    @Override
-    public boolean contains(Point point) {
-        return false;
-    }
-
-    @Override
-    public void moveTo(Point point) {
-
-    }
 }

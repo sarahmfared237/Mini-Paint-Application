@@ -65,32 +65,26 @@ public class MainFrame extends JFrame {
 
     private void drawCircle() {
         new CircleWindow(frame, (Engine) drawingPanel);
-        ((Engine) drawingPanel).refreshComboBox(shapesComb);
     }
 
     private void drawLineSegment() {
         new LineSegmentWindow(frame, (Engine) drawingPanel);
-        ((Engine) drawingPanel).refreshComboBox(shapesComb);
     }
 
     private void drawRectangle() {
         new RectangleWindow(frame, (Engine) drawingPanel);
-        ((Engine) drawingPanel).refreshComboBox(shapesComb);
     }
 
     private void drawSquare() {
         new SquareWindow(frame, (Engine) drawingPanel);
-        ((Engine) drawingPanel).refreshComboBox(shapesComb);
     }
 
     private void drawTriangle() {
         new TriangleWindow(frame, (Engine) drawingPanel);
-        ((Engine) drawingPanel).refreshComboBox(shapesComb);
     }
 
     private void drawText() {
         new TextShapeWindow(frame, (Engine) drawingPanel);
-        ((Engine) drawingPanel).refreshComboBox(shapesComb);
     }
 
     private boolean uncheckSelectedItem() {
@@ -110,7 +104,6 @@ public class MainFrame extends JFrame {
         Engine e = (Engine) drawingPanel;
         e.removeShape(e.getShapes()[shapesComb.getSelectedIndex() - 1]);
         e.refresh(null);
-        e.refreshComboBox(shapesComb);
     }
 
     private void changeColor() {
@@ -143,6 +136,7 @@ public class MainFrame extends JFrame {
     }
 
     public void createUIComponents() {
+        this.shapesComb = new JComboBox();
         this.drawingPanel = new Engine(shapesComb);
     }
 }
