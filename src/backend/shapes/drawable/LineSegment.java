@@ -22,7 +22,17 @@ public class LineSegment extends AbstractShapeClass {
 
     @Override
     public boolean contains(Point point) {
-        return false;
+        int x1 = getPosition().x, y1 = getPosition().y;
+        int x2 = getPoint2().x, y2 = getPoint2().y;
+        int px = point.x, py = point.y;
+        int coproduct = (py - y1) * (x2 - x1) - (px - x1) * (y2 - y1);
+        return coproduct==0 ;
+        // if AC is vertical
+//        if (x1 == px) return x2 == px;
+//        // if AC is horizontal
+//        if (y1 == py) return y2 == py;
+//        // match the gradients
+//        return (x1 - px)*(y1 - py) == (px - x2)*(py - y2);
     }
 
     @Override

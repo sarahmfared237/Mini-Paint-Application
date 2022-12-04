@@ -7,7 +7,7 @@ public interface Shape {
 
     Color DEF_BORDER_COLOR = Color.black;
     Color DEF_FILL_COLOR = Color.black;
-    int DEF_STROKE_SIZE = 5;
+    int DEF_STROKE_SIZE = 1;
 
     void setProperties(Map<String, String> properties);
     Map<String, String> getProperties();
