@@ -6,6 +6,8 @@ import java.awt.*;
 
 import static backend.constants.Properties.SET_BORDER_KEY;
 import static backend.constants.Properties.SET_FILL_KEY;
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
 public class Circle extends AbstractShapeClass {
     private int radius;
@@ -41,7 +43,13 @@ public class Circle extends AbstractShapeClass {
 
     @Override
     public boolean contains(Point point) {
-        return false;
+        int px_coordinate = point.x, py_coordinate = point.y;
+        int x = (getPosition().x), y = (getPosition().y);
+        int radius= getRadius();
+        System.out.println(px_coordinate+"  "+py_coordinate+"  "+radius+"  "+x+"  "+y);
+
+        return pow((px_coordinate- x),2) + pow((py_coordinate- y),2)  <= pow(radius,2);
+
     }
 
     @Override
