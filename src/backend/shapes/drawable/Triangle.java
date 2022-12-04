@@ -36,6 +36,16 @@ public class Triangle extends AbstractShapeClass {
     }
 
     @Override
+    public boolean contains(Point point) {
+        return false;
+    }
+
+    @Override
+    public void moveTo(Point point) {
+
+    }
+
+    @Override
     public void draw(Graphics canvas) {
         ((Graphics2D) canvas).setStroke(new BasicStroke(DEF_STROKE_SIZE));
 

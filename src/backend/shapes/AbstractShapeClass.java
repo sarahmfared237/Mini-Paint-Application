@@ -77,12 +77,8 @@ public abstract class AbstractShapeClass implements Shape, Movable {
     }
 
     @Override
-    public boolean contains(Point point) {
-        return false;
-    }
+    public abstract boolean contains(Point point);
 
     @Override
-    public void moveTo(Point point) {
-
-    }
+    public abstract void moveTo(Point point);
 }
