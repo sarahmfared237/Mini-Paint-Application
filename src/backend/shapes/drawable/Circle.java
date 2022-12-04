@@ -12,7 +12,7 @@ public class Circle extends AbstractShapeClass {
 
     public Circle(Point point, int radius) {
         super(point);
-        this.radius = radius;
+        setRadius(radius);
     }
 
     public int getRadius() {
