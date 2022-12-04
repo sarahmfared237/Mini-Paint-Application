@@ -30,11 +30,13 @@ public class Circle extends AbstractShapeClass {
 
         if (getProperties().get(SET_BORDER_KEY).equals("true")) {
             canvas.setColor(getColor());
-            canvas.drawOval(getPosition().x - getRadius(), getPosition().y - getRadius(), getRadius()*2, getRadius()*2);
+            canvas.drawOval(getPosition().x - getRadius(), getPosition().y - getRadius(),
+                    getRadius()*2, getRadius()*2);
         }
         if (getProperties().get(SET_FILL_KEY).equals("true")) {
             canvas.setColor(getFillColor());
-            canvas.fillOval(getPosition().x - getRadius(), getPosition().y - getRadius(), getRadius()*2, getRadius()*2);
+            canvas.fillOval(getPosition().x - getRadius(), getPosition().y - getRadius(),
+                    getRadius()*2, getRadius()*2);
         }
     }
 }
