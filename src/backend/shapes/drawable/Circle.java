@@ -7,7 +7,6 @@ import java.awt.*;
 import static backend.constants.Properties.SET_BORDER_KEY;
 import static backend.constants.Properties.SET_FILL_KEY;
 import static java.lang.Math.pow;
-import static java.lang.Math.sqrt;
 
 public class Circle extends AbstractShapeClass {
     private int radius;
@@ -32,12 +31,12 @@ public class Circle extends AbstractShapeClass {
         if (getProperties().get(SET_BORDER_KEY).equals("true")) {
             canvas.setColor(getColor());
             canvas.drawOval(getPosition().x - getRadius(), getPosition().y - getRadius(),
-                    getRadius()*2, getRadius()*2);
+                    getRadius() * 2, getRadius() * 2);
         }
         if (getProperties().get(SET_FILL_KEY).equals("true")) {
             canvas.setColor(getFillColor());
             canvas.fillOval(getPosition().x - getRadius(), getPosition().y - getRadius(),
-                    getRadius()*2, getRadius()*2);
+                    getRadius() * 2, getRadius() * 2);
         }
     }
 
@@ -46,9 +45,8 @@ public class Circle extends AbstractShapeClass {
         int px_coordinate = point.x, py_coordinate = point.y;
         int x = (getPosition().x), y = (getPosition().y);
         int radius= getRadius();
-        System.out.println(px_coordinate+"  "+py_coordinate+"  "+radius+"  "+x+"  "+y);
 
-        return pow((px_coordinate- x),2) + pow((py_coordinate- y),2)  <= pow(radius,2);
+        return pow((px_coordinate - x),2) + pow((py_coordinate - y),2)  <= pow(radius,2);
 
     }
 
