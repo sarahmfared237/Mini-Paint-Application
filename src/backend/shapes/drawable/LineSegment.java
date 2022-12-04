@@ -4,6 +4,8 @@ import backend.shapes.AbstractShapeClass;
 
 import java.awt.*;
 
+import static java.lang.Math.*;
+
 public class LineSegment extends AbstractShapeClass {
     private Point point2;
 
@@ -25,19 +27,32 @@ public class LineSegment extends AbstractShapeClass {
         int x1 = getPosition().x, y1 = getPosition().y;
         int x2 = getPoint2().x, y2 = getPoint2().y;
         int px = point.x, py = point.y;
-        int coproduct = (py - y1) * (x2 - x1) - (px - x1) * (y2 - y1);
-        return coproduct==0 ;
-        // if AC is vertical
-//        if (x1 == px) return x2 == px;
-//        // if AC is horizontal
-//        if (y1 == py) return y2 == py;
-//        // match the gradients
-//        return (x1 - px)*(y1 - py) == (px - x2)*(py - y2);
+        if (abs(abs((px - x1)) + abs((px - x2))) != abs(x1 - x2))
+            return false;
+        double ab = (px - x1) * (x2 - x1) + (py - y1) * (y2 - y1);
+        double norm = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+        double pV = (int) (ab / norm);
+        double vect = sqrt(pow((px - x1), 2) + pow(py - y1, 2));
+        int finalR = (int) sqrt(pow(vect, 2) - pow(pV, 2));
+
+        if (abs(finalR-DEF_STROKE_SIZE) <= DEF_STROKE_SIZE) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override
     public void moveTo(Point point) {
-
+        Point newPoint1 = new Point();
+        Point newPoint2 = new Point();
+        newPoint1.x = getPosition().x + (point.x - getDraggingPoint().x);
+        newPoint1.y = getPosition().y + (point.y - getDraggingPoint().y);
+        newPoint2.x = getPoint2().x + (point.x - getDraggingPoint().x);
+        newPoint2.y = getPoint2().y + (point.y - getDraggingPoint().y);
+        setDraggingPoint(point);
+        setPosition(newPoint1);
+        setPoint2(newPoint2);
     }
 
     @Override

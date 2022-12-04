@@ -41,7 +41,11 @@ public class Rectangle extends AbstractShapeClass {
 
     @Override
     public void moveTo(Point point) {
-        setPosition(point);
+        Point newPoint = new Point();
+        newPoint.x = getPosition().x + (point.x - getDraggingPoint().x);
+        newPoint.y = getPosition().y + (point.y - getDraggingPoint().y);
+        setDraggingPoint(point);
+        setPosition(newPoint);
     }
 
     @Override

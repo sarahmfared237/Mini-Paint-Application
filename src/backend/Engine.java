@@ -12,16 +12,19 @@ import java.awt.*;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.*;
 
 
-public class Engine extends JPanel implements DrawingEngine, MouseListener {
+public class Engine extends JPanel implements DrawingEngine, MouseListener, MouseMotionListener {
 
-    private ArrayList<Shape> shapes;
-    private JComboBox comboBox;
+    private final ArrayList<Shape> shapes;
+    private final JComboBox comboBox;
+    private int selectedIndex =-1;
     public Engine(JComboBox comboBox) {
         super();
         this.addMouseListener(this);
+        this.addMouseMotionListener(this);
         shapes = new ArrayList<>();
         this.comboBox=comboBox;
     }
@@ -106,24 +109,30 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener {
 
     @Override
     public void mousePressed (MouseEvent e){
-        int selectedIndex =-1;
+
         Point p = new Point(e.getX(), e.getY());
+        selectedIndex = -1;
         for(int i=shapes.size()-1 ;i>=0;i--) {
             if (((AbstractShapeClass)shapes.get(i)).contains(p)) {
-                selectedIndex = i + 1;
+                ((AbstractShapeClass) shapes.get(i)).setDraggingPoint(p);
+                selectedIndex = i;
                 break;
             }
         }
 
         if (selectedIndex != -1) {
-            comboBox.setSelectedIndex(selectedIndex);
+            comboBox.setSelectedIndex(selectedIndex + 1);
+        } else {
+            comboBox.setSelectedIndex(0);
+            selectedIndex = -1;
         }
     }
 
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        if (selectedIndex != -1)
+            ((AbstractShapeClass) shapes.get(selectedIndex)).setDraggingPoint(null);
     }
 
     @Override
@@ -133,6 +142,22 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+        Point p = new Point(e.getX(), e.getY());
+        if (p.x >= 0 && p.x <= this.getWidth() && p.y >= 0 && p.y <= this.getHeight())
+            if (selectedIndex != -1) {
+                ((AbstractShapeClass) shapes.get(selectedIndex)).moveTo(p);
+                repaint();
+            }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
 
     }
 }

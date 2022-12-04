@@ -80,6 +80,18 @@ public class Triangle extends AbstractShapeClass {
 
     @Override
     public void moveTo(Point point) {
-
+        Point newPoint1 = new Point();
+        Point newPoint2 = new Point();
+        Point newPoint3 = new Point();
+        newPoint1.x = getPosition().x + (point.x - getDraggingPoint().x);
+        newPoint1.y = getPosition().y + (point.y - getDraggingPoint().y);
+        newPoint2.x = getPoint2().x + (point.x - getDraggingPoint().x);
+        newPoint2.y = getPoint2().y + (point.y - getDraggingPoint().y);
+        newPoint3.x = getPoint3().x + (point.x - getDraggingPoint().x);
+        newPoint3.y = getPoint3().y + (point.y - getDraggingPoint().y);
+        setDraggingPoint(point);
+        setPosition(newPoint1);
+        setPoint2(newPoint2);
+        setPoint3(newPoint3);
     }
 }
