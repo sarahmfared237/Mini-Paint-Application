@@ -57,9 +57,25 @@ public class Triangle extends AbstractShapeClass {
         }
     }
 
+    public double getArea(int x1, int y1, int x2, int y2, int x3, int y3)
+    {
+        return Math.abs((x1*(y2-y3) + x2*(y3-y1)+ x3*(y1-y2))/2.0);
+    }
+
     @Override
     public boolean contains(Point point) {
-        return false;
+        int x1 = getPosition().x, y1 = getPosition().y;
+        int x2 = getPoint2().x, y2 = getPoint2().y;
+        int x3 = getPoint3().x, y3 = getPoint3().y;
+        int px = point.x, py = point.y;
+
+        double A = getArea(x1, y1, x2, y2, x3, y3);
+        double A1 = getArea(px, py, x2, y2, x3, y3);
+        double A2 = getArea(x1, y1, px, py, x3, y3);
+        double A3 = getArea(x1, y1, x2, y2, px, py);
+
+        return (A == A1 + A2 + A3);
+
     }
 
     @Override
