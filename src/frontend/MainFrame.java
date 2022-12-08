@@ -19,7 +19,7 @@ public class MainFrame extends JFrame {
     private JComboBox shapesComb;
     private JButton colorizeBtn;
     private JButton deleteBtn;
-    private JButton circleBtn;
+    private JButton ovalBtn;
     private JButton lineSegmentBtn;
     private JButton squareBtn;
     private JButton rectangleBtn;
@@ -33,7 +33,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         super();
 
-        circleBtn.addActionListener(e -> drawCircle());
+        ovalBtn.addActionListener(e -> drawCircle());
         lineSegmentBtn.addActionListener(e -> drawLineSegment());
         rectangleBtn.addActionListener(e -> drawRectangle());
         triangleBtn.addActionListener(e -> drawTriangle());
@@ -55,16 +55,19 @@ public class MainFrame extends JFrame {
             System.out.println("Can't set GTK+");
         }
 
+
         frame = new JFrame(DEF_TITLE_NAME);
         frame.setContentPane(new MainFrame().main_panel);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+
+
         frame.setVisible(true);
     }
 
     private void drawCircle() {
-        new CircleWindow(frame, (Engine) drawingPanel);
+        new OvalWindow(frame, (Engine) drawingPanel);
     }
 
     private void drawLineSegment() {
@@ -137,6 +140,6 @@ public class MainFrame extends JFrame {
 
     public void createUIComponents() {
         this.shapesComb = new JComboBox();
-        this.drawingPanel = new Engine(shapesComb);
+        drawingPanel = new Engine(shapesComb);
     }
 }

@@ -98,11 +98,11 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="288c4" class="javax.swing.JButton" binding="circleBtn">
+                  <component id="288c4" class="javax.swing.JButton" binding="ovalBtn">
                     <constraints/>
                     <properties>
                       <focusable value="false"/>
-                      <text value="Circle"/>
+                      <text value="Oval"/>
                     </properties>
                   </component>
                   <component id="c99bc" class="javax.swing.JButton" binding="lineSegmentBtn">

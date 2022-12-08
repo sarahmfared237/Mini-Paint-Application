@@ -102,6 +102,13 @@ public class TriangleWindow extends JDialog {
                 return;
             }
 
+            if ((x1 == x2 && x2 == x3) || (y1 == y2 && y2 == y3)) {
+                JOptionPane.showMessageDialog(null, "Not a triangle!",
+                        "Invalid data!",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             if (nameField.getText().trim().equals(""))
                 throw new NumberFormatException();
 

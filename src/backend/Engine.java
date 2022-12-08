@@ -7,12 +7,16 @@ import backend.shapes.Shape;
 
 import static backend.constants.Properties.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
 
 
@@ -160,4 +164,41 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
     public void mouseMoved(MouseEvent e) {
 
     }
+
+    public void exportImage(JFrame frame) {
+        String path;
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.addChoosableFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) return true;
+                return f.getName().toLowerCase().endsWith(".jpg");
+            }
+
+            @Override
+            public String getDescription() {
+                return "JPG file (*.jpg)";
+            }
+        });
+
+        fileChooser.setAcceptAllFileFilterUsed(false);
+
+        if (fileChooser.showDialog(frame, "Export Drawing") == JFileChooser.APPROVE_OPTION) {
+            path = fileChooser.getSelectedFile().getPath();
+        } else {
+            return;
+        }
+
+        BufferedImage image = new BufferedImage(this.getWidth(),this.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = image.createGraphics();
+        this.paint(g2);
+
+        try{
+            ImageIO.write(image, "jpg", new File(path + ".jpg"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -2,7 +2,7 @@ package frontend.shapesframes;
 
 import backend.Engine;
 import backend.exception.InvalidName;
-import backend.shapes.drawable.Circle;
+import backend.shapes.drawable.Oval;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,7 @@ import static backend.constants.Properties.*;
 import static backend.shapes.Shape.DEF_BORDER_COLOR;
 import static backend.shapes.Shape.DEF_FILL_COLOR;
 
-public class CircleWindow extends JDialog {
+public class OvalWindow extends JDialog {
     private JPanel contentPane;
     private JButton colorBtn;
     private JCheckBox borderEnableCheck;
@@ -23,15 +23,15 @@ public class CircleWindow extends JDialog {
     private JTextField xPosField;
     private JTextField nameField;
     private JTextField yPosField;
-    private JTextField radiusField;
+    private JTextField horzField;
     private JLabel colorLabel;
     private JLabel fillColorLabel;
-    private JLabel radiusLabel;
+    private JTextField verField;
 
     private final Engine engine;
 
-    public CircleWindow(JFrame parent, Engine engine) {
-        super(parent, "Draw Circle", ModalityType.DOCUMENT_MODAL);
+    public OvalWindow(JFrame parent, Engine engine) {
+        super(parent, "Draw Oval", ModalityType.DOCUMENT_MODAL);
         setContentPane(contentPane);
         this.engine = engine;
 
@@ -72,14 +72,15 @@ public class CircleWindow extends JDialog {
 
     public void draw() {
         int x, y;
-        int radius;
+        int horizontal, vertical;
         boolean stroke, fill;
         try {
             x = Integer.parseInt(xPosField.getText().trim());
             y = Integer.parseInt(yPosField.getText().trim());
-            radius = Integer.parseInt(radiusField.getText().trim());
+            horizontal = Integer.parseInt(horzField.getText().trim());
+            vertical = Integer.parseInt(verField.getText().trim());
 
-            if (radius <= 0) {
+            if (horizontal <= 0 || vertical <= 0 ) {
                 JOptionPane.showMessageDialog(null, "Value can't be negative ",
                         "Invalid data!",
                         JOptionPane.WARNING_MESSAGE);
@@ -105,12 +106,12 @@ public class CircleWindow extends JDialog {
             p.put(NAME_KEY, nameField.getText());
             p.put(SET_BORDER_KEY, String.valueOf(stroke));
             p.put(SET_FILL_KEY, String.valueOf(fill));
-            Circle circle = new Circle(new Point(x,y), radius);
-            circle.setColor(colorLabel.getBackground());
-            circle.setFillColor(fillColorLabel.getBackground());
-            circle.setProperties(p);
+            Oval oval = new Oval(new Point(x,y), horizontal, vertical);
+            oval.setColor(colorLabel.getBackground());
+            oval.setFillColor(fillColorLabel.getBackground());
+            oval.setProperties(p);
 
-            engine.addShape(circle);
+            engine.addShape(oval);
 
             engine.refresh(null);
             this.dispose();

@@ -8,6 +8,7 @@ import java.awt.geom.Path2D;
 
 import static backend.constants.Properties.SET_BORDER_KEY;
 import static backend.constants.Properties.SET_FILL_KEY;
+import static backend.shapes.drawable.LineSegment.inLine;
 
 public class Triangle extends AbstractShapeClass {
     private Point point2;
@@ -64,18 +65,22 @@ public class Triangle extends AbstractShapeClass {
 
     @Override
     public boolean contains(Point point) {
-        int x1 = getPosition().x, y1 = getPosition().y;
-        int x2 = getPoint2().x, y2 = getPoint2().y;
-        int x3 = getPoint3().x, y3 = getPoint3().y;
-        int px = point.x, py = point.y;
+        if (getProperties().get(SET_FILL_KEY).equals("true")) {
+            int x1 = getPosition().x, y1 = getPosition().y;
+            int x2 = getPoint2().x, y2 = getPoint2().y;
+            int x3 = getPoint3().x, y3 = getPoint3().y;
+            int px = point.x, py = point.y;
 
-        double A = getArea(x1, y1, x2, y2, x3, y3);
-        double A1 = getArea(px, py, x2, y2, x3, y3);
-        double A2 = getArea(x1, y1, px, py, x3, y3);
-        double A3 = getArea(x1, y1, x2, y2, px, py);
+            double A = getArea(x1, y1, x2, y2, x3, y3);
+            double A1 = getArea(px, py, x2, y2, x3, y3);
+            double A2 = getArea(x1, y1, px, py, x3, y3);
+            double A3 = getArea(x1, y1, x2, y2, px, py);
 
-        return (A == A1 + A2 + A3);
+            return (A == A1 + A2 + A3);
+        }
 
+        return inLine(getPosition(), getPoint2(), point) || inLine(getPoint2(), getPoint3(), point) ||
+                inLine(getPoint3(), getPosition(), point);
     }
 
     @Override

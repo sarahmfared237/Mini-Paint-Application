@@ -24,22 +24,7 @@ public class LineSegment extends AbstractShapeClass {
 
     @Override
     public boolean contains(Point point) {
-        int x1 = getPosition().x, y1 = getPosition().y;
-        int x2 = getPoint2().x, y2 = getPoint2().y;
-        int px = point.x, py = point.y;
-        if (abs(abs((px - x1)) + abs((px - x2))) != abs(x1 - x2))
-            return false;
-        double ab = (px - x1) * (x2 - x1) + (py - y1) * (y2 - y1);
-        double norm = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
-        double pV = (int) (ab / norm);
-        double vect = sqrt(pow((px - x1), 2) + pow(py - y1, 2));
-        int finalR = (int) sqrt(pow(vect, 2) - pow(pV, 2));
-
-        if (abs(finalR-DEF_STROKE_SIZE) <= DEF_STROKE_SIZE) {
-            return true;
-        }
-
-        return false;
+        return inLine(getPosition(), getPoint2(), point);
     }
 
     @Override
@@ -60,5 +45,25 @@ public class LineSegment extends AbstractShapeClass {
         ((Graphics2D) canvas).setStroke(new BasicStroke(DEF_STROKE_SIZE));
         canvas.setColor(getColor());
         canvas.drawLine(getPosition().x, getPosition().y, getPoint2().x, getPoint2().y);
+    }
+
+    public static boolean inLine(Point p1, Point p2, Point p3) {
+        int x1 = p1.x, y1 = p1.y;
+        int x2 = p2.x, y2 = p2.y;
+        int px = p3.x, py = p3.y;
+        if (((abs(abs((px - x1)) + abs((px - x2))) != abs(x1 - x2) && x1 != x2)) ||
+                ((abs(abs((py - y1)) + abs((py - y2))) != abs(y1 - y2) && y1 != y2)))
+            return false;
+        double ab = (px - x1) * (x2 - x1) + (py - y1) * (y2 - y1);
+        double norm = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+        double pV = (int) (ab / norm);
+        double vect = sqrt(pow((px - x1), 2) + pow(py - y1, 2));
+        int finalR = (int) sqrt(pow(vect, 2) - pow(pV, 2));
+
+        if (abs(finalR-DEF_STROKE_SIZE) <= DEF_STROKE_SIZE) {
+            return true;
+        }
+
+        return false;
     }
 }

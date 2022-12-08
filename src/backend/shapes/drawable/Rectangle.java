@@ -6,6 +6,7 @@ import java.awt.*;
 
 import static backend.constants.Properties.SET_BORDER_KEY;
 import static backend.constants.Properties.SET_FILL_KEY;
+import static backend.shapes.drawable.LineSegment.inLine;
 
 public class Rectangle extends AbstractShapeClass {
     private int width;
@@ -35,8 +36,15 @@ public class Rectangle extends AbstractShapeClass {
 
     @Override
     public boolean contains(Point point) {
-        return ((point.x >= getPosition().x && (point.x - getPosition().x) <= getWidth()) &&
-                (point.y >= getPosition().y && (point.y - getPosition().y) <= getHeight()));
+        if (this.getProperties().get(SET_FILL_KEY).equals("true"))
+            return ((point.x >= getPosition().x && (point.x - getPosition().x) <= getWidth()) &&
+                    (point.y >= getPosition().y && (point.y - getPosition().y) <= getHeight()));
+        Point p2 = new Point(getPosition().x + getWidth() + DEF_STROKE_SIZE, getPosition().y);
+        Point p3 = new Point(getPosition().x + getWidth() + DEF_STROKE_SIZE,
+                             getPosition().y + getHeight() + DEF_STROKE_SIZE);
+        Point p4 = new Point(getPosition().x, getPosition().y+ getHeight() + DEF_STROKE_SIZE);
+        return inLine(getPosition(), p2, point) || inLine(p2, p3, point) ||
+                inLine(p3, p4, point) || inLine(p4, getPosition(), point);
     }
 
     @Override
