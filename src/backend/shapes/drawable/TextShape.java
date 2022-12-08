@@ -1,6 +1,7 @@
 package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
+import backend.shapes.Shape;
 
 import java.awt.*;
 
@@ -37,6 +38,11 @@ public class TextShape extends AbstractShapeClass {
         canvas.setFont(new Font("Monospaced", Font.BOLD, getTextSize()));
         canvas.setColor(getColor());
         canvas.drawString(getText(), getPosition().x + getTextSize(), getPosition().y + getTextSize());
+    }
+
+    @Override
+    public Shape copy() {
+        return null;
     }
 
     @Override

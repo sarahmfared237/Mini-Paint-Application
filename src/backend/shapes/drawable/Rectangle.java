@@ -1,8 +1,10 @@
 package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
+import backend.shapes.Shape;
 
 import java.awt.*;
+import java.util.HashMap;
 
 import static backend.constants.Properties.SET_BORDER_KEY;
 import static backend.constants.Properties.SET_FILL_KEY;
@@ -68,5 +70,12 @@ public class Rectangle extends AbstractShapeClass {
             canvas.setColor(getFillColor());
             canvas.fillRect(getPosition().x, getPosition().y, getWidth(), getHeight());
         }
+    }
+
+    @Override
+    public Shape copy() {
+        Rectangle new_rect = new Rectangle((Point) getPosition().clone(), getWidth(),getHeight());
+        new_rect.setProperties(new HashMap<>(getProperties()));
+        return  new_rect;
     }
 }

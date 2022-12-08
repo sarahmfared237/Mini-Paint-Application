@@ -1,8 +1,10 @@
 package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
+import backend.shapes.Shape;
 
 import java.awt.*;
+import java.util.HashMap;
 
 import static backend.constants.Properties.SET_BORDER_KEY;
 import static backend.constants.Properties.SET_FILL_KEY;
@@ -47,6 +49,13 @@ public class Oval extends AbstractShapeClass {
             canvas.fillOval(getPosition().x - getHorizontal(), getPosition().y - getVertical(),
                     getHorizontal()*2, getVertical()*2);
         }
+    }
+
+    @Override
+    public Shape copy() {
+        Oval new_oval = new Oval((Point) getPosition().clone(),getHorizontal(),getVertical());
+        new_oval.setProperties(new HashMap<>(getProperties()));
+        return  new_oval;
     }
 
     @Override

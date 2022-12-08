@@ -19,4 +19,5 @@ public interface Shape {
     Point getPosition();
     void setPosition(Point position);
     void draw(Graphics canvas);
+    Shape copy();
 }

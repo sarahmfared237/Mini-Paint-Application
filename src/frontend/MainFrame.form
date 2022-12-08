@@ -71,16 +71,32 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
           </hspacer>
-          <component id="707e7" class="javax.swing.JButton" binding="renameBtn">
+          <grid id="28922" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints>
-              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
               <focusable value="false"/>
-              <text value="Rename"/>
             </properties>
-          </component>
+            <border type="none"/>
+            <children>
+              <component id="e0ed" class="javax.swing.JButton" binding="renameBtn">
+                <constraints/>
+                <properties>
+                  <focusable value="false"/>
+                  <text value="Rename"/>
+                </properties>
+              </component>
+              <component id="efb72" class="javax.swing.JButton" binding="copyBtn">
+                <constraints/>
+                <properties>
+                  <focusable value="false"/>
+                  <text value="Copy"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
       <grid id="fd31f" layout-manager="BorderLayout" hgap="0" vgap="0">

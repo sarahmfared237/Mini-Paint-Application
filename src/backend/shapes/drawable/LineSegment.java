@@ -1,8 +1,10 @@
 package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
+import backend.shapes.Shape;
 
 import java.awt.*;
+import java.util.HashMap;
 
 import static java.lang.Math.*;
 
@@ -45,6 +47,13 @@ public class LineSegment extends AbstractShapeClass {
         ((Graphics2D) canvas).setStroke(new BasicStroke(DEF_STROKE_SIZE));
         canvas.setColor(getColor());
         canvas.drawLine(getPosition().x, getPosition().y, getPoint2().x, getPoint2().y);
+    }
+
+    @Override
+    public Shape copy() {
+        LineSegment new_line = new LineSegment((Point) getPosition().clone(), (Point) getPoint2().clone());
+        new_line.setProperties(new HashMap<>(getProperties()));
+        return  new_line;
     }
 
     public static boolean inLine(Point p1, Point p2, Point p3) {

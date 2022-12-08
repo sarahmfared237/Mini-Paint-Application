@@ -1,10 +1,12 @@
 package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
+import backend.shapes.Shape;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
+import java.util.HashMap;
 
 import static backend.constants.Properties.SET_BORDER_KEY;
 import static backend.constants.Properties.SET_FILL_KEY;
@@ -56,6 +58,13 @@ public class Triangle extends AbstractShapeClass {
             canvas.setColor(getFillColor());
             ((Graphics2D) canvas).fill(tri);
         }
+    }
+
+    @Override
+    public Shape copy() {
+        Triangle new_tri = new Triangle((Point) getPosition().clone(), (Point) getPoint2().clone(), (Point) getPoint3().clone());
+        new_tri.setProperties(new HashMap<>(getProperties()));
+        return  new_tri;
     }
 
     public double getArea(int x1, int y1, int x2, int y2, int x3, int y3)

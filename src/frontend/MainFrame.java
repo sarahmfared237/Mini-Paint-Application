@@ -1,6 +1,7 @@
 package frontend;
 
 import backend.Engine;
+import backend.shapes.AbstractShapeClass;
 import backend.shapes.drawable.LineSegment;
 import backend.shapes.drawable.TextShape;
 import frontend.shapesframes.*;
@@ -28,7 +29,9 @@ public class MainFrame extends JFrame {
     private JButton renameBtn;
     private JButton textDrawBtn;
     private JButton triangleBtn;
+    private JButton copyBtn;
     public static JFrame frame;
+    private static int no_of_copies;
 
     public MainFrame() {
         super();
@@ -43,9 +46,10 @@ public class MainFrame extends JFrame {
         deleteBtn.addActionListener(e -> deleteShape());
         colorizeBtn.addActionListener(e -> changeColor());
         renameBtn.addActionListener(e -> renameShape());
-
+        copyBtn.addActionListener(e -> copyShape());
 
     }
+
 
     public static void main(String[] args) {
         try {
@@ -135,6 +139,20 @@ public class MainFrame extends JFrame {
         if (name == null) return;
 
         e.renameShape(e.getShapes()[shapesComb.getSelectedIndex() - 1], name);
+        e.refresh(null);
+    }
+
+    private void copyShape() {
+        if (uncheckSelectedItem()) {
+            return;
+        }
+
+        Engine e = (Engine) drawingPanel;
+        AbstractShapeClass s = (AbstractShapeClass) e.getShapes()[shapesComb.getSelectedIndex() - 1];
+        AbstractShapeClass new_s = (AbstractShapeClass) s.copy();
+        e.renameShape(new_s,s.getName()+"_copy"+no_of_copies);
+        e.addShape(new_s);
+        no_of_copies++;
         e.refresh(null);
     }
 

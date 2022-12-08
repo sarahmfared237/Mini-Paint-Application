@@ -3,6 +3,9 @@ package backend.shapes;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import backend.constants.Properties.*;
+
+import static backend.constants.Properties.NAME_KEY;
 
 public abstract class AbstractShapeClass implements Shape, Movable {
     private Map<String, String> properties;
@@ -18,6 +21,9 @@ public abstract class AbstractShapeClass implements Shape, Movable {
         position = point;
     }
 
+    public String getName() {
+        return this.getProperties().get(NAME_KEY);
+    }
     @Override
     public Map<String, String> getProperties() {
         return properties;
@@ -81,4 +87,5 @@ public abstract class AbstractShapeClass implements Shape, Movable {
 
     @Override
     public abstract void moveTo(Point point);
+
 }
