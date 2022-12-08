@@ -89,6 +89,7 @@ public class Rectangle extends AbstractShapeClass {
         new_rect.put("point1",p1);
         new_rect.put("width",width);
         new_rect.put("height",height);
+        new_rect.put("type",RECTANGLE_TYPE);
         new_rect.put("Properties",propertiesToJSON());
         String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
         new_rect.put("borderColor",hexBorderColor);

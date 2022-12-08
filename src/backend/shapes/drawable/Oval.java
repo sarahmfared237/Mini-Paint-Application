@@ -68,6 +68,7 @@ public class Oval extends AbstractShapeClass {
         new_oval.put("point1",p1);
         new_oval.put("horizontalR",horizontal);
         new_oval.put("verticalR",vertical);
+        new_oval.put("type",Oval_TYPE);
         new_oval.put("Properties",propertiesToJSON());
         String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
         new_oval.put("borderColor",hexBorderColor);

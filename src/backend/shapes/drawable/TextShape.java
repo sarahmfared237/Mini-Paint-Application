@@ -55,6 +55,7 @@ public class TextShape extends AbstractShapeClass {
         new_text.put("point1",p1);
         new_text.put("text",text);
         new_text.put("text size",textSize);
+        new_text.put("type",TextShape_TYPE);
         new_text.put("Properties",propertiesToJSON());
         String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
         new_text.put("borderColor",hexBorderColor);

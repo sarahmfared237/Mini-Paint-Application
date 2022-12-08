@@ -69,6 +69,7 @@ public class LineSegment extends AbstractShapeClass {
         p2.put("y",getPoint2().y);
         new_line.put("point1",p1);
         new_line.put("point2",p2);
+        new_line.put("type",Line_TYPE);
         new_line.put("Properties",propertiesToJSON());
         String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
         new_line.put("borderColor",hexBorderColor);

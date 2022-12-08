@@ -83,6 +83,7 @@ public class Triangle extends AbstractShapeClass {
         new_tri.put("point1",p1);
         new_tri.put("point2",p2);
         new_tri.put("point3",p3);
+        new_tri.put("type",TRIANGLE_TYPE);
         new_tri.put("Properties",propertiesToJSON());
         String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
         new_tri.put("borderColor",hexBorderColor);
