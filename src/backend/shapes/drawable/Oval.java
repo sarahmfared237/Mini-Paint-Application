@@ -2,6 +2,7 @@ package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
 import backend.shapes.Shape;
+import org.json.JSONObject;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -56,6 +57,24 @@ public class Oval extends AbstractShapeClass {
         Oval new_oval = new Oval((Point) getPosition().clone(),getHorizontal(),getVertical());
         new_oval.setProperties(new HashMap<>(getProperties()));
         return  new_oval;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject new_oval = new JSONObject();
+        JSONObject p1= new JSONObject();
+        p1.put("x",getPosition().x);
+        p1.put("y",getPosition().y);
+        new_oval.put("point1",p1);
+        new_oval.put("horizontalR",horizontal);
+        new_oval.put("verticalR",vertical);
+        new_oval.put("Properties",propertiesToJSON());
+        String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
+        new_oval.put("borderColor",hexBorderColor);
+        String hexFillColor = "#"+Integer.toHexString(getFillColor().getRGB()).substring(2);
+        new_oval.put("fillColor",hexFillColor);
+
+        return new_oval;
     }
 
     @Override

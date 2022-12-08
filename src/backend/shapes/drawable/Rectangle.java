@@ -2,6 +2,7 @@ package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
 import backend.shapes.Shape;
+import org.json.JSONObject;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -77,5 +78,23 @@ public class Rectangle extends AbstractShapeClass {
         Rectangle new_rect = new Rectangle((Point) getPosition().clone(), getWidth(),getHeight());
         new_rect.setProperties(new HashMap<>(getProperties()));
         return  new_rect;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject new_rect = new JSONObject();
+        JSONObject p1= new JSONObject();
+        p1.put("x",getPosition().x);
+        p1.put("y",getPosition().y);
+        new_rect.put("point1",p1);
+        new_rect.put("width",width);
+        new_rect.put("height",height);
+        new_rect.put("Properties",propertiesToJSON());
+        String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
+        new_rect.put("borderColor",hexBorderColor);
+        String hexFillColor = "#"+Integer.toHexString(getFillColor().getRGB()).substring(2);
+        new_rect.put("fillColor",hexFillColor);
+
+        return new_rect;
     }
 }

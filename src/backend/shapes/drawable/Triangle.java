@@ -2,6 +2,7 @@ package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
 import backend.shapes.Shape;
+import org.json.JSONObject;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
@@ -65,6 +66,30 @@ public class Triangle extends AbstractShapeClass {
         Triangle new_tri = new Triangle((Point) getPosition().clone(), (Point) getPoint2().clone(), (Point) getPoint3().clone());
         new_tri.setProperties(new HashMap<>(getProperties()));
         return  new_tri;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject new_tri = new JSONObject();
+        JSONObject p1= new JSONObject();
+        p1.put("x",getPosition().x);
+        p1.put("y",getPosition().y);
+        JSONObject p2= new JSONObject();
+        p2.put("x",getPoint2().x);
+        p2.put("y",getPoint2().y);
+        JSONObject p3= new JSONObject();
+        p3.put("x",getPoint3().x);
+        p3.put("y",getPoint3().y);
+        new_tri.put("point1",p1);
+        new_tri.put("point2",p2);
+        new_tri.put("point3",p3);
+        new_tri.put("Properties",propertiesToJSON());
+        String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
+        new_tri.put("borderColor",hexBorderColor);
+        String hexFillColor = "#"+Integer.toHexString(getFillColor().getRGB()).substring(2);
+        new_tri.put("fillColor",hexFillColor);
+
+        return new_tri;
     }
 
     public double getArea(int x1, int y1, int x2, int y2, int x3, int y3)

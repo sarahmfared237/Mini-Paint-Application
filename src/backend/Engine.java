@@ -4,6 +4,8 @@ import backend.exception.InvalidName;
 import backend.shapes.AbstractShapeClass;
 import backend.shapes.DrawingEngine;
 import backend.shapes.Shape;
+import backend.shapes.drawable.LineSegment;
+import org.json.JSONArray;
 
 import static backend.constants.Properties.*;
 
@@ -17,6 +19,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -199,6 +203,52 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void saveDrawing (JFrame frame)  {
+        String path;
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.addChoosableFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) return true;
+                return f.getName().toLowerCase().endsWith(".json");
+            }
+
+            @Override
+            public String getDescription() {
+                return "JSON file (*.json)";
+            }
+        });
+
+        fileChooser.setAcceptAllFileFilterUsed(false);
+
+        if (fileChooser.showDialog(frame, "Save Drawing") == JFileChooser.APPROVE_OPTION) {
+            path = fileChooser.getSelectedFile().getPath();
+        } else {
+            return;
+        }
+//        LineSegment l=new LineSegment(new Point(0,0),new Point(100,100));
+//        Map<String, String> p = new HashMap<>();
+//        p.put(NAME_KEY,"Abdallah");
+//        l.setProperties(p);
+        JSONArray jsonShapes = new JSONArray();
+        for (Shape s : getShapes()) {
+            jsonShapes.put(s.toJSON());
+        }
+
+        FileWriter file = null;
+        try {
+            file = new FileWriter(path);
+            file.write(jsonShapes.toString());
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
 }

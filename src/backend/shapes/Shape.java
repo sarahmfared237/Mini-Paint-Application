@@ -1,5 +1,9 @@
 package backend.shapes;
 
+import jdk.nashorn.internal.runtime.JSONFunctions;
+import netscape.javascript.JSObject;
+import org.json.JSONObject;
+
 import java.awt.*;
 import java.util.Map;
 
@@ -20,4 +24,5 @@ public interface Shape {
     void setPosition(Point position);
     void draw(Graphics canvas);
     Shape copy();
+    JSONObject toJSON();
 }

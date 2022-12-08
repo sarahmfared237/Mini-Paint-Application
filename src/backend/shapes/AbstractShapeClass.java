@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import backend.constants.Properties.*;
+import org.json.JSONObject;
 
 import static backend.constants.Properties.NAME_KEY;
 
@@ -19,6 +20,15 @@ public abstract class AbstractShapeClass implements Shape, Movable {
         fillColor = DEF_FILL_COLOR;
         properties = new HashMap<>();
         position = point;
+    }
+
+    public JSONObject propertiesToJSON() {
+        JSONObject probJSON = new JSONObject();
+        for (Map.Entry<String, String> prob :
+                getProperties().entrySet()) {
+            probJSON.put(prob.getKey(),prob.getValue());
+        }
+        return  probJSON;
     }
 
     public String getName() {

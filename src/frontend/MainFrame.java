@@ -48,6 +48,14 @@ public class MainFrame extends JFrame {
         renameBtn.addActionListener(e -> renameShape());
         copyBtn.addActionListener(e -> copyShape());
 
+        JMenuBar menuBar = new JMenuBar();     //create menu bar.
+        JMenu fileMenu = new JMenu("File");          // create menu
+        JMenuItem saveItem = new JMenuItem("Save");
+        saveItem.addActionListener(e -> ((Engine)drawingPanel).saveDrawing(frame));
+        saveItem.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        fileMenu.add(saveItem);
+        menuBar.add(fileMenu);
+        frame.setJMenuBar(menuBar);
     }
 
 

@@ -2,6 +2,8 @@ package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
 import backend.shapes.Shape;
+import netscape.javascript.JSObject;
+import org.json.JSONObject;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -54,6 +56,26 @@ public class LineSegment extends AbstractShapeClass {
         LineSegment new_line = new LineSegment((Point) getPosition().clone(), (Point) getPoint2().clone());
         new_line.setProperties(new HashMap<>(getProperties()));
         return  new_line;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject new_line = new JSONObject();
+        JSONObject p1= new JSONObject();
+        p1.put("x",getPosition().x);
+        p1.put("y",getPosition().y);
+        JSONObject p2= new JSONObject();
+        p2.put("x",getPoint2().x);
+        p2.put("y",getPoint2().y);
+        new_line.put("point1",p1);
+        new_line.put("point2",p2);
+        new_line.put("Properties",propertiesToJSON());
+        String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
+        new_line.put("borderColor",hexBorderColor);
+        String hexFillColor = "#"+Integer.toHexString(getFillColor().getRGB()).substring(2);
+        new_line.put("fillColor",hexFillColor);
+
+        return new_line;
     }
 
     public static boolean inLine(Point p1, Point p2, Point p3) {
