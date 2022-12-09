@@ -1,12 +1,14 @@
 package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
+import backend.shapes.Resizable;
 import backend.shapes.Shape;
 import com.google.gson.JsonObject;
 
 import java.awt.*;
 import java.util.HashMap;
 
+import static backend.constants.Properties.SET_SELECTED;
 import static java.lang.Math.*;
 
 public class LineSegment extends AbstractShapeClass {
@@ -48,6 +50,11 @@ public class LineSegment extends AbstractShapeClass {
         ((Graphics2D) canvas).setStroke(new BasicStroke(DEF_STROKE_SIZE));
         canvas.setColor(getColor());
         canvas.drawLine(getPosition().x, getPosition().y, getPoint2().x, getPoint2().y);
+
+        if (getProperties().get(SET_SELECTED) != null &&
+                getProperties().get(SET_SELECTED).equals("true")) {
+            drawSelected(canvas);
+        }
     }
 
     @Override
@@ -102,5 +109,20 @@ public class LineSegment extends AbstractShapeClass {
         int finalR = (int) sqrt(pow(vect, 2) - pow(pV, 2));
 
         return abs(finalR - DEF_STROKE_SIZE) <= DEF_STROKE_SIZE;
+    }
+
+    @Override
+    public void drawSelected(Graphics canvas) {
+        points = new Rectangle[]{new Rectangle(getPosition(), Resizable.BOX_WIDTH, Resizable.BOX_HEIGHT, true),
+                                 new Rectangle(getPoint2(), Resizable.BOX_WIDTH, Resizable.BOX_HEIGHT, true)};
+
+        for (Rectangle r : points) {
+            r.draw(canvas);
+        }
+    }
+
+    @Override
+    public void resize() {
+
     }
 }

@@ -3,8 +3,7 @@ package backend.shapes;
 import java.awt.*;
 
 public interface Resizable {
-    void setDraggingPoint(Point point);
-    Point getDraggingPoint();
-    boolean contains(Point point);
+    int BOX_WIDTH = 7, BOX_HEIGHT = 7;
+    void drawSelected(Graphics canvas);
     void resize();
 }

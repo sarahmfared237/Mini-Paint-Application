@@ -21,6 +21,14 @@ public class Rectangle extends AbstractShapeClass {
         setHeight(height);
     }
 
+    public Rectangle(Point point, int width, int height, boolean shift) {
+        super(point);
+        setWidth(width);
+        setHeight(height);
+        if (shift)
+            setPosition(new Point((int) (point.x - width/2.0), (int) (point.y - height/2.0)));
+    }
+
     public int getWidth() {
         return width;
     }
@@ -111,5 +119,15 @@ public class Rectangle extends AbstractShapeClass {
         newRectangle.setColor(Color.decode(shapeJson.get("borderColor").getAsString()));
         newRectangle.setFillColor(Color.decode(shapeJson.get("fillColor").getAsString()));
         return newRectangle;
+    }
+
+    @Override
+    public void drawSelected(Graphics canvas) {
+
+    }
+
+    @Override
+    public void resize() {
+
     }
 }

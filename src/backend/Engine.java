@@ -120,11 +120,15 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
 
         Point p = new Point(e.getX(), e.getY());
         selectedIndex = -1;
-        for(int i=shapes.size()-1 ;i>=0;i--) {
-            if (((AbstractShapeClass)shapes.get(i)).contains(p)) {
+        for(int i=0 ;i<shapes.size();i++) {
+            shapes.get(i).addProperties(SET_SELECTED, "false");
+            if (((AbstractShapeClass) shapes.get(i)).contains(p)) {
                 ((AbstractShapeClass) shapes.get(i)).setDraggingPoint(p);
+                if (selectedIndex != -1) {
+                    shapes.get(selectedIndex).addProperties(SET_SELECTED, "false");
+                }
+                shapes.get(i).addProperties(SET_SELECTED, "true");
                 selectedIndex = i;
-                break;
             }
         }
 
@@ -134,6 +138,8 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
             comboBox.setSelectedIndex(0);
             selectedIndex = -1;
         }
+
+        refresh(null);
     }
 
 

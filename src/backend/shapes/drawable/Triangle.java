@@ -149,4 +149,14 @@ public class Triangle extends AbstractShapeClass {
         newTriangle.setFillColor(Color.decode(shapeJson.get("fillColor").getAsString()));
         return newTriangle;
     }
+
+    @Override
+    public void drawSelected(Graphics canvas) {
+
+    }
+
+    @Override
+    public void resize() {
+
+    }
 }

@@ -89,4 +89,14 @@ public class TextShape extends AbstractShapeClass {
         setDraggingPoint(point);
         setPosition(newPoint);
     }
+
+    @Override
+    public void drawSelected(Graphics canvas) {
+
+    }
+
+    @Override
+    public void resize() {
+
+    }
 }

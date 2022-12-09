@@ -4,13 +4,15 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import backend.shapes.drawable.Rectangle;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import static backend.constants.Properties.NAME_KEY;
+import static backend.constants.Properties.*;
 
-public abstract class AbstractShapeClass implements Shape, Movable {
+public abstract class AbstractShapeClass implements Shape, Movable, Resizable {
+    protected Rectangle[] points;
     private Map<String, String> properties;
     private Color borderColor;
     private Color fillColor;
@@ -21,6 +23,9 @@ public abstract class AbstractShapeClass implements Shape, Movable {
         borderColor = DEF_BORDER_COLOR;
         fillColor = DEF_FILL_COLOR;
         properties = new HashMap<>();
+        addProperties(SET_SELECTED, "false");
+        addProperties(SET_BORDER_KEY, "true");
+        addProperties(SET_FILL_KEY, "true");
         position = point;
     }
 
