@@ -17,7 +17,7 @@ public class MainFrame extends JFrame {
     public static final String DEF_TITLE_NAME = "MiniPaint";
 
     private JPanel main_panel;
-    private JComboBox shapesComb;
+    private JComboBox<String> shapesComb;
     private JButton colorizeBtn;
     private JButton deleteBtn;
     private JButton ovalBtn;
@@ -51,9 +51,13 @@ public class MainFrame extends JFrame {
         JMenuBar menuBar = new JMenuBar();     //create menu bar.
         JMenu fileMenu = new JMenu("File");          // create menu
         JMenuItem saveItem = new JMenuItem("Save");
-        saveItem.addActionListener(e -> ((Engine)drawingPanel).saveDrawing(frame));
-        saveItem.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        JMenuItem loadItem = new JMenuItem("Load");
+        saveItem.addActionListener(e -> ((Engine)drawingPanel).saveDrawing());
+        saveItem.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+        loadItem.addActionListener(e -> ((Engine)drawingPanel).loadDrawing());
+        loadItem.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         fileMenu.add(saveItem);
+        fileMenu.add(loadItem);
         menuBar.add(fileMenu);
         frame.setJMenuBar(menuBar);
     }
@@ -165,7 +169,7 @@ public class MainFrame extends JFrame {
     }
 
     public void createUIComponents() {
-        this.shapesComb = new JComboBox();
+        this.shapesComb = new JComboBox<>();
         drawingPanel = new Engine(shapesComb);
     }
 }

@@ -5,11 +5,19 @@ import backend.shapes.AbstractShapeClass;
 import backend.shapes.DrawingEngine;
 import backend.shapes.Shape;
 import backend.shapes.drawable.LineSegment;
-import org.json.JSONArray;
+import backend.shapes.drawable.Oval;
+import backend.shapes.drawable.Rectangle;
+import backend.shapes.drawable.TextShape;
+import backend.shapes.drawable.Triangle;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import static backend.constants.Properties.*;
+import static backend.shapes.Shape.*;
+import static frontend.MainFrame.frame;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
@@ -17,24 +25,21 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 
 public class Engine extends JPanel implements DrawingEngine, MouseListener, MouseMotionListener {
 
-    private final ArrayList<Shape> shapes;
-    private final JComboBox comboBox;
+    private ArrayList<Shape> shapes;
+    private final JComboBox<String> comboBox;
     private int selectedIndex =-1;
-    public Engine(JComboBox comboBox) {
+    public Engine(JComboBox<String> comboBox) {
         super();
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
         shapes = new ArrayList<>();
-        this.comboBox=comboBox;
+        this.comboBox = comboBox;
     }
 
     @Override
@@ -81,14 +86,9 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
     public Shape getShape(int index) {
         return shapes.get(index);
     }
-
-    public Shape getShape(Shape shape) {
-        for (Shape s : shapes) {
-            if (shape.getProperties().get(NAME_KEY).equals(s.getProperties().get(NAME_KEY)))
-                return s;
-        }
-        return null;
-
+    public void clearDrawing() {
+        shapes = new ArrayList<>();
+        refresh(null);
     }
 
     public void refreshComboBox() {
@@ -169,43 +169,7 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
 
     }
 
-    public void exportImage(JFrame frame) {
-        String path;
-
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.addChoosableFileFilter(new FileFilter() {
-            @Override
-            public boolean accept(File f) {
-                if (f.isDirectory()) return true;
-                return f.getName().toLowerCase().endsWith(".jpg");
-            }
-
-            @Override
-            public String getDescription() {
-                return "JPG file (*.jpg)";
-            }
-        });
-
-        fileChooser.setAcceptAllFileFilterUsed(false);
-
-        if (fileChooser.showDialog(frame, "Export Drawing") == JFileChooser.APPROVE_OPTION) {
-            path = fileChooser.getSelectedFile().getPath();
-        } else {
-            return;
-        }
-
-        BufferedImage image = new BufferedImage(this.getWidth(),this.getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2 = image.createGraphics();
-        this.paint(g2);
-
-        try{
-            ImageIO.write(image, "jpg", new File(path + ".jpg"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void saveDrawing (JFrame frame)  {
+    public void saveDrawing ()  {
         String path;
 
         JFileChooser fileChooser = new JFileChooser();
@@ -229,26 +193,74 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
         } else {
             return;
         }
-//        LineSegment l=new LineSegment(new Point(0,0),new Point(100,100));
-//        Map<String, String> p = new HashMap<>();
-//        p.put(NAME_KEY,"Abdallah");
-//        l.setProperties(p);
-        JSONArray jsonShapes = new JSONArray();
+
+        JsonArray jsonShapes = new JsonArray();
         for (Shape s : getShapes()) {
-            jsonShapes.put(s.toJSON());
+            jsonShapes.add(s.toJSON());
         }
 
-        FileWriter file = null;
+        FileWriter file;
         try {
-            file = new FileWriter(path);
+            file = new FileWriter(path+".json");
             file.write(jsonShapes.toString());
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
 
+    public void loadDrawing ()  {
+        String path;
 
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.addChoosableFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) return true;
+                return f.getName().toLowerCase().endsWith(".json");
+            }
+
+            @Override
+            public String getDescription() {
+                return "JSON file (*.json)";
+            }
+        });
+
+        fileChooser.setAcceptAllFileFilterUsed(false);
+
+        if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+            path = fileChooser.getSelectedFile().getPath();
+        } else {
+            return;
+        }
+
+        clearDrawing();
+
+        JsonParser jsonParser = new JsonParser();
+
+        try (FileReader reader = new FileReader(path)) {
+            JsonArray shapesArrayJson = jsonParser.parse(reader).getAsJsonArray();
+
+            for (JsonElement shapeElement : shapesArrayJson) {
+
+                JsonObject shapeJson = shapeElement.getAsJsonObject();
+                Shape current_shape = switch (shapeJson.get("type").getAsInt()) {
+                    case OVAL_TYPE -> Oval.jsonToShape(shapeJson);
+                    case RECTANGLE_TYPE -> Rectangle.jsonToShape(shapeJson);
+                    case LINE_TYPE -> LineSegment.jsonToShape(shapeJson);
+                    case Text_SHAPE_TYPE -> TextShape.jsonToShape(shapeJson);
+                    case TRIANGLE_TYPE -> Triangle.jsonToShape(shapeJson);
+                    default -> null;
+                };
+
+                addShape(current_shape);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        refresh(null);
     }
 
 }

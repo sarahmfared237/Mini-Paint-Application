@@ -2,7 +2,7 @@ package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
 import backend.shapes.Shape;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -81,21 +81,35 @@ public class Rectangle extends AbstractShapeClass {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject new_rect = new JSONObject();
-        JSONObject p1= new JSONObject();
-        p1.put("x",getPosition().x);
-        p1.put("y",getPosition().y);
-        new_rect.put("point1",p1);
-        new_rect.put("width",width);
-        new_rect.put("height",height);
-        new_rect.put("type",RECTANGLE_TYPE);
-        new_rect.put("Properties",propertiesToJSON());
+    public JsonObject toJSON() {
+        JsonObject new_rect = new JsonObject();
+        JsonObject p1= new JsonObject();
+        p1.addProperty("x",getPosition().x);
+        p1.addProperty("y",getPosition().y);
+        new_rect.add("point1", p1);
+        new_rect.addProperty("width",width);
+        new_rect.addProperty("height",height);
+        new_rect.addProperty("type",RECTANGLE_TYPE);
+        new_rect.add("Properties",propertiesToJSON());
         String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
-        new_rect.put("borderColor",hexBorderColor);
+        new_rect.addProperty("borderColor",hexBorderColor);
         String hexFillColor = "#"+Integer.toHexString(getFillColor().getRGB()).substring(2);
-        new_rect.put("fillColor",hexFillColor);
+        new_rect.addProperty("fillColor",hexFillColor);
 
         return new_rect;
+    }
+
+    public static Shape jsonToShape(JsonObject shapeJson) {
+        JsonObject p1Json = shapeJson.getAsJsonObject("point1");
+        Point p1 = new Point(p1Json.get("x").getAsInt(), p1Json.get("y").getAsInt());
+
+        int width = shapeJson.get("width").getAsInt();
+        int height = shapeJson.get("height").getAsInt();
+
+        Rectangle newRectangle = new Rectangle(p1, width, height);
+        newRectangle.setProperties(JsonToProperties(shapeJson.getAsJsonArray("Properties")));
+        newRectangle.setColor(Color.decode(shapeJson.get("borderColor").getAsString()));
+        newRectangle.setFillColor(Color.decode(shapeJson.get("fillColor").getAsString()));
+        return newRectangle;
     }
 }

@@ -3,8 +3,10 @@ package backend.shapes;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-import backend.constants.Properties.*;
-import org.json.JSONObject;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import static backend.constants.Properties.NAME_KEY;
 
@@ -22,13 +24,29 @@ public abstract class AbstractShapeClass implements Shape, Movable {
         position = point;
     }
 
-    public JSONObject propertiesToJSON() {
-        JSONObject probJSON = new JSONObject();
+    public JsonArray propertiesToJSON() {
+        JsonArray probJSON = new JsonArray();
         for (Map.Entry<String, String> prob :
                 getProperties().entrySet()) {
-            probJSON.put(prob.getKey(),prob.getValue());
+            JsonObject propValue = new JsonObject();
+            propValue.addProperty(prob.getKey(),prob.getValue());
+            probJSON.add(propValue);
         }
-        return  probJSON;
+        return probJSON;
+    }
+
+    public static Map<String, String> JsonToProperties(JsonArray propJson) {
+        Map<String, String> prop = new HashMap<>();
+
+        for (JsonElement propJ : propJson.getAsJsonArray()) {
+            JsonObject jsonObject = propJ.getAsJsonObject();
+
+            for (Map.Entry<String, JsonElement> entry: jsonObject.entrySet()) {
+                prop.put(entry.getKey(), entry.getValue().getAsString());
+            }
+        }
+
+        return prop;
     }
 
     public String getName() {

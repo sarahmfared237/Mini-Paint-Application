@@ -2,7 +2,7 @@ package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
 import backend.shapes.Shape;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -60,22 +60,35 @@ public class Oval extends AbstractShapeClass {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject new_oval = new JSONObject();
-        JSONObject p1= new JSONObject();
-        p1.put("x",getPosition().x);
-        p1.put("y",getPosition().y);
-        new_oval.put("point1",p1);
-        new_oval.put("horizontalR",horizontal);
-        new_oval.put("verticalR",vertical);
-        new_oval.put("type",Oval_TYPE);
-        new_oval.put("Properties",propertiesToJSON());
+    public JsonObject toJSON() {
+        JsonObject new_oval = new JsonObject();
+        JsonObject p1 = new JsonObject();
+        p1.addProperty("x",getPosition().x);
+        p1.addProperty("y",getPosition().y);
+        new_oval.add("point1",p1);
+        new_oval.addProperty("horizontalR",horizontal);
+        new_oval.addProperty("verticalR",vertical);
+        new_oval.addProperty("type",OVAL_TYPE);
+        new_oval.add("Properties",propertiesToJSON());
         String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
-        new_oval.put("borderColor",hexBorderColor);
+        new_oval.addProperty("borderColor",hexBorderColor);
         String hexFillColor = "#"+Integer.toHexString(getFillColor().getRGB()).substring(2);
-        new_oval.put("fillColor",hexFillColor);
+        new_oval.addProperty("fillColor",hexFillColor);
 
         return new_oval;
+    }
+
+    public static Shape jsonToShape(JsonObject shapeJson) {
+        JsonObject p1Json = shapeJson.getAsJsonObject("point1");
+        Point p1 = new Point(p1Json.get("x").getAsInt(), p1Json.get("y").getAsInt());
+        int horz = shapeJson.get("horizontalR").getAsInt();
+        int vect = shapeJson.get("verticalR").getAsInt();
+
+        Oval newOval = new Oval(p1, horz, vect);
+        newOval.setProperties(JsonToProperties(shapeJson.getAsJsonArray("Properties")));
+        newOval.setColor(Color.decode(shapeJson.get("borderColor").getAsString()));
+        newOval.setFillColor(Color.decode(shapeJson.get("fillColor").getAsString()));
+        return newOval;
     }
 
     @Override

@@ -2,7 +2,7 @@ package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
 import backend.shapes.Shape;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 import java.awt.*;
 
@@ -47,22 +47,33 @@ public class TextShape extends AbstractShapeClass {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject new_text = new JSONObject();
-        JSONObject p1= new JSONObject();
-        p1.put("x",getPosition().x);
-        p1.put("y",getPosition().y);
-        new_text.put("point1",p1);
-        new_text.put("text",text);
-        new_text.put("text size",textSize);
-        new_text.put("type",TextShape_TYPE);
-        new_text.put("Properties",propertiesToJSON());
+    public JsonObject toJSON() {
+        JsonObject new_text = new JsonObject();
+        JsonObject p1= new JsonObject();
+        p1.addProperty("x",getPosition().x);
+        p1.addProperty("y",getPosition().y);
+        new_text.add("point1",p1);
+        new_text.addProperty("text",text);
+        new_text.addProperty("text size",textSize);
+        new_text.addProperty("type",Text_SHAPE_TYPE);
+        new_text.add("Properties",propertiesToJSON());
         String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
-        new_text.put("borderColor",hexBorderColor);
-        String hexFillColor = "#"+Integer.toHexString(getFillColor().getRGB()).substring(2);
-        new_text.put("fillColor",hexFillColor);
+        new_text.addProperty("borderColor",hexBorderColor);
 
         return new_text;
+    }
+
+    public static Shape jsonToShape(JsonObject shapeJson) {
+        JsonObject p1Json = shapeJson.getAsJsonObject("point1");
+        Point p1 = new Point(p1Json.get("x").getAsInt(), p1Json.get("y").getAsInt());
+
+        int textSize = shapeJson.get("text size").getAsInt();
+        String text = shapeJson.get("text").getAsString();
+
+        TextShape newTextShape = new TextShape(p1, text, textSize);
+        newTextShape.setProperties(JsonToProperties(shapeJson.getAsJsonArray("Properties")));
+        newTextShape.setColor(Color.decode(shapeJson.get("borderColor").getAsString()));
+        return newTextShape;
     }
 
     @Override

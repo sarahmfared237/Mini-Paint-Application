@@ -2,8 +2,7 @@ package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
 import backend.shapes.Shape;
-import netscape.javascript.JSObject;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -59,24 +58,34 @@ public class LineSegment extends AbstractShapeClass {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject new_line = new JSONObject();
-        JSONObject p1= new JSONObject();
-        p1.put("x",getPosition().x);
-        p1.put("y",getPosition().y);
-        JSONObject p2= new JSONObject();
-        p2.put("x",getPoint2().x);
-        p2.put("y",getPoint2().y);
-        new_line.put("point1",p1);
-        new_line.put("point2",p2);
-        new_line.put("type",Line_TYPE);
-        new_line.put("Properties",propertiesToJSON());
+    public JsonObject toJSON() {
+        JsonObject new_line = new JsonObject();
+        JsonObject p1 = new JsonObject();
+        p1.addProperty("x",getPosition().x);
+        p1.addProperty("y",getPosition().y);
+        JsonObject p2= new JsonObject();
+        p2.addProperty("x",getPoint2().x);
+        p2.addProperty("y",getPoint2().y);
+        new_line.add("point1",p1);
+        new_line.add("point2",p2);
+        new_line.addProperty("type",LINE_TYPE);
+        new_line.add("Properties",propertiesToJSON());
         String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
-        new_line.put("borderColor",hexBorderColor);
-        String hexFillColor = "#"+Integer.toHexString(getFillColor().getRGB()).substring(2);
-        new_line.put("fillColor",hexFillColor);
+        new_line.addProperty("borderColor",hexBorderColor);
 
         return new_line;
+    }
+
+    public static Shape jsonToShape(JsonObject shapeJson) {
+        JsonObject p1Json = shapeJson.getAsJsonObject("point1");
+        Point p1 = new Point(p1Json.get("x").getAsInt(), p1Json.get("y").getAsInt());
+        JsonObject p2Json = shapeJson.getAsJsonObject("point2");
+        Point p2 = new Point(p2Json.get("x").getAsInt(), p2Json.get("y").getAsInt());
+
+        LineSegment newLineSegment = new LineSegment(p1, p2);
+        newLineSegment.setProperties(JsonToProperties(shapeJson.getAsJsonArray("Properties")));
+        newLineSegment.setColor(Color.decode(shapeJson.get("borderColor").getAsString()));
+        return newLineSegment;
     }
 
     public static boolean inLine(Point p1, Point p2, Point p3) {
@@ -92,10 +101,6 @@ public class LineSegment extends AbstractShapeClass {
         double vect = sqrt(pow((px - x1), 2) + pow(py - y1, 2));
         int finalR = (int) sqrt(pow(vect, 2) - pow(pV, 2));
 
-        if (abs(finalR-DEF_STROKE_SIZE) <= DEF_STROKE_SIZE) {
-            return true;
-        }
-
-        return false;
+        return abs(finalR - DEF_STROKE_SIZE) <= DEF_STROKE_SIZE;
     }
 }

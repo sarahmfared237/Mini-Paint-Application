@@ -2,7 +2,7 @@ package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
 import backend.shapes.Shape;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
@@ -69,26 +69,26 @@ public class Triangle extends AbstractShapeClass {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject new_tri = new JSONObject();
-        JSONObject p1= new JSONObject();
-        p1.put("x",getPosition().x);
-        p1.put("y",getPosition().y);
-        JSONObject p2= new JSONObject();
-        p2.put("x",getPoint2().x);
-        p2.put("y",getPoint2().y);
-        JSONObject p3= new JSONObject();
-        p3.put("x",getPoint3().x);
-        p3.put("y",getPoint3().y);
-        new_tri.put("point1",p1);
-        new_tri.put("point2",p2);
-        new_tri.put("point3",p3);
-        new_tri.put("type",TRIANGLE_TYPE);
-        new_tri.put("Properties",propertiesToJSON());
+    public JsonObject toJSON() {
+        JsonObject new_tri = new JsonObject();
+        JsonObject p1= new JsonObject();
+        p1.addProperty("x",getPosition().x);
+        p1.addProperty("y",getPosition().y);
+        JsonObject p2= new JsonObject();
+        p2.addProperty("x",getPoint2().x);
+        p2.addProperty("y",getPoint2().y);
+        JsonObject p3= new JsonObject();
+        p3.addProperty("x",getPoint3().x);
+        p3.addProperty("y",getPoint3().y);
+        new_tri.add("point1",p1);
+        new_tri.add("point2",p2);
+        new_tri.add("point3",p3);
+        new_tri.addProperty("type",TRIANGLE_TYPE);
+        new_tri.add("Properties",propertiesToJSON());
         String hexBorderColor = "#"+Integer.toHexString(getColor().getRGB()).substring(2);
-        new_tri.put("borderColor",hexBorderColor);
+        new_tri.addProperty("borderColor",hexBorderColor);
         String hexFillColor = "#"+Integer.toHexString(getFillColor().getRGB()).substring(2);
-        new_tri.put("fillColor",hexFillColor);
+        new_tri.addProperty("fillColor",hexFillColor);
 
         return new_tri;
     }
@@ -133,5 +133,20 @@ public class Triangle extends AbstractShapeClass {
         setPosition(newPoint1);
         setPoint2(newPoint2);
         setPoint3(newPoint3);
+    }
+
+    public static Shape jsonToShape(JsonObject shapeJson) {
+        JsonObject p1Json = shapeJson.getAsJsonObject("point1");
+        Point p1 = new Point(p1Json.get("x").getAsInt(), p1Json.get("y").getAsInt());
+        JsonObject p2Json = shapeJson.getAsJsonObject("point2");
+        Point p2 = new Point(p2Json.get("x").getAsInt(), p2Json.get("y").getAsInt());
+        JsonObject p3Json = shapeJson.getAsJsonObject("point3");
+        Point p3 = new Point(p3Json.get("x").getAsInt(), p3Json.get("y").getAsInt());
+
+        Triangle newTriangle = new Triangle(p1, p2, p3);
+        newTriangle.setProperties(JsonToProperties(shapeJson.getAsJsonArray("Properties")));
+        newTriangle.setColor(Color.decode(shapeJson.get("borderColor").getAsString()));
+        newTriangle.setFillColor(Color.decode(shapeJson.get("fillColor").getAsString()));
+        return newTriangle;
     }
 }
