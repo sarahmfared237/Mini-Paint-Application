@@ -117,10 +117,15 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
 
     @Override
     public void mousePressed (MouseEvent e){
-
         Point p = new Point(e.getX(), e.getY());
         selectedIndex = -1;
         for(int i=0 ;i<shapes.size();i++) {
+            Rectangle rectangle= (Rectangle) ((AbstractShapeClass) shapes.get(i)).containResizePoint(p);
+            if (rectangle!=null) {
+                rectangle.setDraggingPoint(p);
+                selectedIndex=i;
+                return;
+            }
             shapes.get(i).addProperties(SET_SELECTED, "false");
             if (((AbstractShapeClass) shapes.get(i)).contains(p)) {
                 ((AbstractShapeClass) shapes.get(i)).setDraggingPoint(p);
@@ -140,6 +145,7 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
         }
 
         refresh(null);
+
     }
 
 
@@ -165,7 +171,13 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
         Point p = new Point(e.getX(), e.getY());
         if (p.x >= 0 && p.x <= this.getWidth() && p.y >= 0 && p.y <= this.getHeight())
             if (selectedIndex != -1) {
-                ((AbstractShapeClass) shapes.get(selectedIndex)).moveTo(p);
+                Rectangle rec = (Rectangle) ((AbstractShapeClass) shapes.get(selectedIndex)).containResizePoint(p);
+                if (rec!=null) {
+                    rec.moveTo(p);
+                    //((AbstractShapeClass) shapes.get(selectedIndex)).resize(p);
+                }
+                else
+                    ((AbstractShapeClass) shapes.get(selectedIndex)).moveTo(p);
                 repaint();
             }
     }

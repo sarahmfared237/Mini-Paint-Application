@@ -29,6 +29,18 @@ public abstract class AbstractShapeClass implements Shape, Movable, Resizable {
         position = point;
     }
 
+
+    @Override
+    public Shape containResizePoint(Point point) {
+        if (getProperties().get(SET_SELECTED) == null || getProperties().get(SET_SELECTED).equals("false"))
+            return null;
+        for (Rectangle rectangle:points){
+            if (rectangle.contains(point))
+                return rectangle;
+        }
+        return null;
+    }
+
     public JsonArray propertiesToJSON() {
         JsonArray probJSON = new JsonArray();
         for (Map.Entry<String, String> prob :

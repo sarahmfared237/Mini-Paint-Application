@@ -122,7 +122,7 @@ public class Oval extends AbstractShapeClass {
     }
 
     @Override
-    public void resize() {
+    public void resize(Point point) {
 
     }
 }
