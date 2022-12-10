@@ -1,7 +1,6 @@
 package backend.shapes.drawable;
 
 import backend.shapes.AbstractShapeClass;
-import backend.shapes.Resizable;
 import backend.shapes.Shape;
 import com.google.gson.JsonObject;
 
@@ -17,8 +16,8 @@ public class LineSegment extends AbstractShapeClass {
     public LineSegment(Point point1, Point point2) {
         super(point1);
         setPoint2(point2);
-        points = new Rectangle[]{new Rectangle(getPosition(), Resizable.BOX_WIDTH, Resizable.BOX_HEIGHT, true),
-                new Rectangle(getPoint2(), Resizable.BOX_WIDTH, Resizable.BOX_HEIGHT, true)};
+        points = new RectangleSelectedShape[]{new RectangleSelectedShape(getPosition(), BOX_WIDTH, BOX_HEIGHT),
+                new RectangleSelectedShape(getPoint2(), BOX_WIDTH, BOX_HEIGHT)};
 
     }
 
@@ -46,6 +45,8 @@ public class LineSegment extends AbstractShapeClass {
         setDraggingPoint(point);
         setPosition(newPoint1);
         setPoint2(newPoint2);
+        points[0].setPosition(new Point((int) (getPosition().x - BOX_WIDTH/2.0), (int) (getPosition().y - BOX_HEIGHT/2.0)));
+        points[1].setPosition(new Point((int) (getPoint2().x - BOX_WIDTH/2.0), (int) (getPoint2().y - BOX_HEIGHT/2.0)));
     }
 
     @Override
@@ -115,27 +116,14 @@ public class LineSegment extends AbstractShapeClass {
     }
 
     @Override
-    public void drawSelected(Graphics canvas) {
-        points[0].setPosition(new Point((int) (getPosition().x - BOX_WIDTH/2.0), (int) (getPosition().y - BOX_HEIGHT/2.0)));
-        points[1].setPosition(new Point((int) (getPoint2().x - BOX_WIDTH/2.0), (int) (getPoint2().y - BOX_HEIGHT/2.0)));
-
-        for (Rectangle r : points) {
-            r.draw(canvas);
-        }
-    }
-
-    @Override
     public void resize(Point point) {
         Point newPoint1 = new Point();
         Point newPoint2 = new Point();
-        newPoint1.x = (int) (points[0].getPosition().x+ BOX_WIDTH/2.0);
-        newPoint1.y = (int) (points[0].getPosition().y+ BOX_HEIGHT/2.0);
-        newPoint2.x = (int) (points[1].getPosition().x+ BOX_WIDTH/2.0);
-        newPoint2.y = (int) (points[1].getPosition().y+ BOX_HEIGHT/2.0);
+        newPoint1.x = (int) (points[0].getPosition().x + BOX_WIDTH/2.0);
+        newPoint1.y = (int) (points[0].getPosition().y + BOX_HEIGHT/2.0);
+        newPoint2.x = (int) (points[1].getPosition().x + BOX_WIDTH/2.0);
+        newPoint2.y = (int) (points[1].getPosition().y + BOX_HEIGHT/2.0);
         setPosition(newPoint1);
         setPoint2(newPoint2);
-
     }
-
-
 }

@@ -4,11 +4,8 @@ import backend.exception.InvalidName;
 import backend.shapes.AbstractShapeClass;
 import backend.shapes.DrawingEngine;
 import backend.shapes.Shape;
-import backend.shapes.drawable.LineSegment;
-import backend.shapes.drawable.Oval;
+import backend.shapes.drawable.*;
 import backend.shapes.drawable.Rectangle;
-import backend.shapes.drawable.TextShape;
-import backend.shapes.drawable.Triangle;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -120,22 +117,26 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
         Point p = new Point(e.getX(), e.getY());
         selectedIndex = -1;
         for(int i=0 ;i<shapes.size();i++) {
-            Rectangle rectangle= (Rectangle) ((AbstractShapeClass) shapes.get(i)).containResizePoint(p);
+            RectangleSelectedShape rectangle = (RectangleSelectedShape) ((AbstractShapeClass) shapes.get(i)).containResizePoint(p);
+
             if (rectangle!=null) {
                 rectangle.setDraggingPoint(p);
                 selectedIndex=i;
-                return;
-            }
-            shapes.get(i).addProperties(SET_SELECTED, "false");
-            if (((AbstractShapeClass) shapes.get(i)).contains(p)) {
-                ((AbstractShapeClass) shapes.get(i)).setDraggingPoint(p);
-                if (selectedIndex != -1) {
-                    shapes.get(selectedIndex).addProperties(SET_SELECTED, "false");
+            } else {
+
+                shapes.get(i).addProperties(SET_SELECTED, "false");
+                if (((AbstractShapeClass) shapes.get(i)).contains(p)) {
+                    ((AbstractShapeClass) shapes.get(i)).setDraggingPoint(p);
+                    if (selectedIndex != -1) {
+                        shapes.get(selectedIndex).addProperties(SET_SELECTED, "false");
+                    }
+                    shapes.get(i).addProperties(SET_SELECTED, "true");
+                    selectedIndex = i;
                 }
-                shapes.get(i).addProperties(SET_SELECTED, "true");
-                selectedIndex = i;
             }
         }
+
+        refresh(null);
 
         if (selectedIndex != -1) {
             comboBox.setSelectedIndex(selectedIndex + 1);
@@ -143,9 +144,6 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
             comboBox.setSelectedIndex(0);
             selectedIndex = -1;
         }
-
-        refresh(null);
-
     }
 
 
@@ -171,13 +169,15 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
         Point p = new Point(e.getX(), e.getY());
         if (p.x >= 0 && p.x <= this.getWidth() && p.y >= 0 && p.y <= this.getHeight())
             if (selectedIndex != -1) {
-                Rectangle rec = (Rectangle) ((AbstractShapeClass) shapes.get(selectedIndex)).containResizePoint(p);
+                RectangleSelectedShape rec = (RectangleSelectedShape) ((AbstractShapeClass) shapes.get(selectedIndex)).containResizePoint(p);
+
                 if (rec!=null) {
                     rec.moveTo(p);
-                    //((AbstractShapeClass) shapes.get(selectedIndex)).resize(p);
+                    ((AbstractShapeClass) shapes.get(selectedIndex)).resize(p);
+                } else {
+                    if (((AbstractShapeClass) shapes.get(selectedIndex)).getDraggingPoint() != null)
+                        ((AbstractShapeClass) shapes.get(selectedIndex)).moveTo(p);
                 }
-                else
-                    ((AbstractShapeClass) shapes.get(selectedIndex)).moveTo(p);
                 repaint();
             }
     }
@@ -228,7 +228,7 @@ public class Engine extends JPanel implements DrawingEngine, MouseListener, Mous
 
     }
 
-    public void loadDrawing ()  {
+    public void loadDrawing()  {
         String path;
 
         JFileChooser fileChooser = new JFileChooser();

@@ -9,8 +9,8 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
 import java.util.HashMap;
 
-import static backend.constants.Properties.SET_BORDER_KEY;
-import static backend.constants.Properties.SET_FILL_KEY;
+import static backend.constants.Properties.*;
+import static backend.constants.Properties.SET_SELECTED;
 import static backend.shapes.drawable.LineSegment.inLine;
 
 public class Triangle extends AbstractShapeClass {
@@ -21,6 +21,9 @@ public class Triangle extends AbstractShapeClass {
         super(point1);
         setPoint2(point2);
         setPoint3(point3);
+        points = new RectangleSelectedShape[]{new RectangleSelectedShape(getPosition(), BOX_WIDTH, BOX_HEIGHT),
+                 new RectangleSelectedShape(getPoint2(), BOX_WIDTH, BOX_HEIGHT),
+                 new RectangleSelectedShape(getPoint3(), BOX_WIDTH, BOX_HEIGHT)};
     }
 
     public Point getPoint2() {
@@ -58,6 +61,11 @@ public class Triangle extends AbstractShapeClass {
         if (getProperties().get(SET_FILL_KEY).equals("true")) {
             canvas.setColor(getFillColor());
             ((Graphics2D) canvas).fill(tri);
+        }
+
+        if (getProperties().get(SET_SELECTED) != null &&
+                getProperties().get(SET_SELECTED).equals("true")) {
+            drawSelected(canvas);
         }
     }
 
@@ -133,6 +141,9 @@ public class Triangle extends AbstractShapeClass {
         setPosition(newPoint1);
         setPoint2(newPoint2);
         setPoint3(newPoint3);
+        points[0].setPosition(new Point((int) (getPosition().x - BOX_WIDTH/2.0), (int) (getPosition().y - BOX_HEIGHT/2.0)));
+        points[1].setPosition(new Point((int) (getPoint2().x - BOX_WIDTH/2.0), (int) (getPoint2().y - BOX_HEIGHT/2.0)));
+        points[2].setPosition(new Point((int) (getPoint3().x - BOX_WIDTH/2.0), (int) (getPoint3().y - BOX_HEIGHT/2.0)));
     }
 
     public static Shape jsonToShape(JsonObject shapeJson) {
@@ -151,12 +162,18 @@ public class Triangle extends AbstractShapeClass {
     }
 
     @Override
-    public void drawSelected(Graphics canvas) {
-
-    }
-
-    @Override
     public void resize(Point point) {
-
+        Point newPoint1 = new Point();
+        Point newPoint2 = new Point();
+        Point newPoint3 = new Point();
+        newPoint1.x = (int) (points[0].getPosition().x + BOX_WIDTH/2.0);
+        newPoint1.y = (int) (points[0].getPosition().y + BOX_HEIGHT/2.0);
+        newPoint2.x = (int) (points[1].getPosition().x + BOX_WIDTH/2.0);
+        newPoint2.y = (int) (points[1].getPosition().y + BOX_HEIGHT/2.0);
+        newPoint3.x = (int) (points[2].getPosition().x + BOX_WIDTH/2.0);
+        newPoint3.y = (int) (points[2].getPosition().y + BOX_HEIGHT/2.0);
+        setPosition(newPoint1);
+        setPoint2(newPoint2);
+        setPoint3(newPoint3);
     }
 }

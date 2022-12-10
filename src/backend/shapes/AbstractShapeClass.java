@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import backend.shapes.drawable.Rectangle;
+import backend.shapes.drawable.RectangleSelectedShape;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import static backend.constants.Properties.*;
 
 public abstract class AbstractShapeClass implements Shape, Movable, Resizable {
-    protected Rectangle[] points;
+    protected RectangleSelectedShape[] points;
     private Map<String, String> properties;
     private Color borderColor;
     private Color fillColor;
@@ -34,11 +34,18 @@ public abstract class AbstractShapeClass implements Shape, Movable, Resizable {
     public Shape containResizePoint(Point point) {
         if (getProperties().get(SET_SELECTED) == null || getProperties().get(SET_SELECTED).equals("false"))
             return null;
-        for (Rectangle rectangle:points){
+        for (RectangleSelectedShape rectangle:points){
             if (rectangle.contains(point))
                 return rectangle;
         }
         return null;
+    }
+
+    @Override
+    public void drawSelected(Graphics canvas) {
+        for (RectangleSelectedShape r : points) {
+            r.draw(canvas);
+        }
     }
 
     public JsonArray propertiesToJSON() {
